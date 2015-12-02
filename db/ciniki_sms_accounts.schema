@@ -1,0 +1,49 @@
+#
+# Description
+# -----------
+# This table stores sms accounts for sending sms messages from companies.
+#
+# Fields
+# -------
+# id:					The id of the art catalog item.
+# uuid:					The Universal Unique ID.
+# business_id:			The business the item is attached to.
+#
+# status:               The current status of the account.
+#
+#                       10 - Active
+#                       50 - Archive
+#
+# api_method:           The method to use to connect to the api
+#   
+#                       10 - Curl
+#
+# api_endpoint:         The url to the endpoint.
+#
+# cell_arg:             The argument name to for the cell number. 
+# msg_arg:              The argument name for the message.
+# key_arg:              The argument name for the key.
+# account_key:          The key or token for the gateway.
+#
+# sms_5min_limit:       The number of messages to send within a 5 minute limit. 
+#
+# date_added:       	The UTC date and time the account was added.
+# last_updated:     	The UTC date and time the account was last updated.
+#
+create table ciniki_sms_accounts (
+	id int not null auto_increment,
+	uuid char(36) not null,
+	business_id int not null,
+    status tinyint unsigned not null,
+    api_method tinyint unsigned not null,
+    api_endpoint varchar(250) not null,
+    cell_arg varchar(50) not null,
+    msg_arg varchar(50) not null,
+    key_arg varchar(50) not null,
+    account_key varchar(120) not null,
+    sms_5min_limit int not null,
+	date_added datetime not null,
+	last_updated datetime not null,
+	primary key(id),
+	index sync (business_id, uuid, last_updated)
+) ENGINE='InnoDB', COMMENT='v1.01';
