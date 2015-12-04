@@ -34,6 +34,7 @@ create table ciniki_sms_accounts (
 	id int not null auto_increment,
 	uuid char(36) not null,
 	business_id int not null,
+    name varchar(250) not null,
     status tinyint unsigned not null,
     api_method tinyint unsigned not null,
     api_endpoint varchar(250) not null,

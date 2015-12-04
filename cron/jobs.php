@@ -11,6 +11,19 @@
 // -------
 //
 function ciniki_sms_cron_jobs($ciniki) {
+
+
+
+
+
+
+
+
+    return array('stat'=>'ok');
+
+
+
+
 	ciniki_cron_logMsg($ciniki, 0, array('code'=>'0', 'msg'=>'Checking for sms jobs', 'severity'=>'5'));
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');

@@ -211,6 +211,10 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $settings, $sms_id, $acc
                         ));
                 }
             }
+
+            //
+            // FIXME: Check for hooks to other modules to update message sent
+            //
             return $error_rsp;
         } else {
             //

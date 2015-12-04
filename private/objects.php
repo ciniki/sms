@@ -14,21 +14,28 @@ function ciniki_sms_objects($ciniki) {
 	$objects = array();
 	$objects['account'] = array(
 		'name'=>'SMS Account',
+        'o_name'=>'account',
+        'o_container'=>'accounts',
 		'sync'=>'yes',
 		'table'=>'ciniki_sms_accounts',
 		'fields'=>array(
-			'api_method'=>array(),
-			'api_endpoint'=>array(),
-			'cell_arg'=>array(),
-			'msg_arg'=>array(),
-			'key_arg'=>array(),
-			'account_key'=>array('default'=>''),
-			'sms_5min_limit'=>array('default'=>'1'),
+            'name'=>array('name'=>'Name'),
+            'status'=>array('name'=>'Status'),
+			'api_method'=>array('name'=>'API Method'),
+			'api_endpoint'=>array('name'=>'API URL'),
+			'cell_arg'=>array('name'=>'Cell Argument Name'),
+			'msg_arg'=>array('name'=>'Message Argument Name'),
+			'key_arg'=>array('name'=>'Account Key Argument Name'),
+			'account_key'=>array('name'=>'Account Key', 'default'=>''),
+			'sms_5min_limit'=>array('name'=>'5 Minute Sending Limit', 'default'=>'1'),
+            'disclaimer'=>array('name'=>'Disclaimer', 'default'=>''),
 			),
 		'history_table'=>'ciniki_sms_history',
 		);
 	$objects['message'] = array(
 		'name'=>'SMS Message',
+        'o_name'=>'message',
+        'o_container'=>'messages',
 		'sync'=>'yes',
 		'table'=>'ciniki_sms_messages',
 		'fields'=>array(
@@ -44,6 +51,8 @@ function ciniki_sms_objects($ciniki) {
 		);
 	$objects['objref'] = array(
 		'name'=>'SMS Object Reference',
+        'o_name'=>'objref',
+        'o_container'=>'objrefs',
 		'sync'=>'yes',
 		'table'=>'ciniki_sms_objrefs',
 		'fields'=>array(
@@ -55,6 +64,8 @@ function ciniki_sms_objects($ciniki) {
 		);
 	$objects['log'] = array(
 		'name'=>'SMS Log',
+        'o_name'=>'log',
+        'o_container'=>'logs',
 		'sync'=>'yes',
 		'table'=>'ciniki_sms_log',
 		'fields'=>array(
