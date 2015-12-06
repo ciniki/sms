@@ -12,18 +12,6 @@
 //
 function ciniki_sms_cron_jobs($ciniki) {
 
-
-
-
-
-
-
-
-    return array('stat'=>'ok');
-
-
-
-
 	ciniki_cron_logMsg($ciniki, 0, array('code'=>'0', 'msg'=>'Checking for sms jobs', 'severity'=>'5'));
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
@@ -106,7 +94,7 @@ function ciniki_sms_cron_jobs($ciniki) {
                 //
                 // Send the message
                 //
-                $rc = ciniki_sms_sendMessage($ciniki, $business_id, $settings, $message['id'], 
+                $rc = ciniki_sms_sendMessage($ciniki, $business_id, $message['id'], 
                     (isset($accounts[$message['account_id']])?$accounts[$message['account_id']]:$accounts[$default_account_id]));
                 if( $rc['stat'] != 'ok' ) {
                     ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'2786', 'msg'=>'Unable to send message',

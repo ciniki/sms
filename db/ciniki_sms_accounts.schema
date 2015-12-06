@@ -43,6 +43,7 @@ create table ciniki_sms_accounts (
     key_arg varchar(50) not null,
     account_key varchar(120) not null,
     sms_5min_limit int not null,
+    disclaimer varchar(1000) not null,
 	date_added datetime not null,
 	last_updated datetime not null,
 	primary key(id),

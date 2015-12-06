@@ -45,7 +45,6 @@ function ciniki_sms_objects($ciniki) {
 			'status'=>array('default'=>'0'),
 			'cell_number'=>array(),
 			'content'=>array(),
-			'date_read'=>array('default'=>''),
 			),
 		'history_table'=>'ciniki_sms_history',
 		);

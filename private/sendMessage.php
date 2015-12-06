@@ -12,7 +12,7 @@
 // Returns
 // -------
 //
-function ciniki_sms_sendMessage(&$ciniki, $business_id, $settings, $sms_id, $account) {
+function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
 
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
@@ -33,7 +33,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $settings, $sms_id, $acc
         . "flags, "
         . "status, "
 		. "customer_id, "
-        . "cell_phone, "
+        . "cell_number, "
         . "content "
 		. "FROM ciniki_sms_messages "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $sms_id) . "' "
@@ -131,8 +131,8 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $settings, $sms_id, $acc
             $url .= $account['cell_arg'] . '=' . rawurlencode($message['cell_number']) . '&';
         }
         $url .= $account['msg_arg'] . '=' . rawurlencode($message['content']) . '&';
-        $url .= $account['account_key'] . '=' . rawurlencode($account['account_key']) . '&';
-        $ch = curl_init($account['api_endpoint']);
+        $url .= $account['key_arg'] . '=' . rawurlencode($account['account_key']) . '&';
+        $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     //	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -182,7 +182,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $settings, $sms_id, $acc
             // Log the error
             //
             $error_rsp = ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2788', 'msg'=>'Unable to send message.', 'pmsg'=>$rsp,
-                'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
+                'sms_id'=>$sms_id, 'severity'=>50,
                 ));
             if( $message['status'] == '10' ) {
                 $strsql = "UPDATE ciniki_sms_messages "
