@@ -6,31 +6,31 @@
 #
 # Fields
 # ------
-# id:				The ID assigned to the sms object ref.
-# uuid:				The Universal Unique ID.
-# business_id:		The business the sms object ref is attached to.
+# id:               The ID assigned to the sms object ref.
+# uuid:             The Universal Unique ID.
+# business_id:      The business the sms object ref is attached to.
 #
-# sms_id:			The ID of the sms attached to the object.
+# sms_id:           The ID of the sms attached to the object.
 #
-# object:			The object the sms is attached to.  This is a reference
-# 					to the package.module.object.  When combined with the object_id
-#					the refering module can lookup sms messages.
+# object:           The object the sms is attached to.  This is a reference
+#                   to the package.module.object.  When combined with the object_id
+#                   the refering module can lookup sms messages.
 #
-# object_id:		The ID of the object the sms is attached to.
+# object_id:        The ID of the object the sms is attached to.
 #
-# date_added:		The UTC date and time the record was added.
-# last_updated:		The UTC date and time the record was last updated.
+# date_added:       The UTC date and time the record was added.
+# last_updated:     The UTC date and time the record was last updated.
 #
 create table ciniki_sms_objrefs (
-	id int not null auto_increment,
-	uuid char(36) not null,
-	business_id int not null,
-	sms_id int not null,
-	object varchar(100) not null,
-	object_id varchar(100) not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	primary key (id),
-	index (sms_id, object, object_id),
-	index sync (business_id, uuid, last_updated)
+    id int not null auto_increment,
+    uuid char(36) not null,
+    business_id int not null,
+    sms_id int not null,
+    object varchar(100) not null,
+    object_id varchar(100) not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    index (sms_id, object, object_id),
+    index sync (business_id, uuid, last_updated)
 ) ENGINE='InnoDB', COMMENT='v1.01';
