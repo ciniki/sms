@@ -56,17 +56,17 @@ function ciniki_sms_cron_jobs($ciniki) {
                 'fields'=>array('id', 'api_method', 'api_endpoint', 'cell_arg', 'msg_arg', 'key_arg', 'account_key', 'sms_5min_limit')),
             ));
         if( $rc['stat'] != 'ok' ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'2782', 'msg'=>'No accounts setup to send SMS.', 
+            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.30', 'msg'=>'No accounts setup to send SMS.', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
         if( !isset($rc['accounts']) ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'2783', 'msg'=>'No accounts setup to send SMS.', 
+            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.31', 'msg'=>'No accounts setup to send SMS.', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
         if( count($rc['accounts']) < 1 ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'2784', 'msg'=>'No accounts setup to send SMS.', 
+            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.32', 'msg'=>'No accounts setup to send SMS.', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
@@ -84,7 +84,7 @@ function ciniki_sms_cron_jobs($ciniki) {
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.sms', 'sms');
         if( $rc['stat'] != 'ok' ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'2785', 'msg'=>'Unable to load the list of messages to send', 
+            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.33', 'msg'=>'Unable to load the list of messages to send', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
@@ -97,7 +97,7 @@ function ciniki_sms_cron_jobs($ciniki) {
                 $rc = ciniki_sms_sendMessage($ciniki, $business_id, $message['id'], 
                     (isset($accounts[$message['account_id']])?$accounts[$message['account_id']]:$accounts[$default_account_id]));
                 if( $rc['stat'] != 'ok' ) {
-                    ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'2786', 'msg'=>'Unable to send message',
+                    ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.34', 'msg'=>'Unable to send message',
                         'severity'=>50, 'err'=>$rc['err']));
                     continue;
                 }

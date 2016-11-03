@@ -41,12 +41,12 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
         . "";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.sms', 'sms');
     if( $rc['stat'] != 'ok' ) {
-        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2772', 'msg'=>'Unable to find message',
+        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.18', 'msg'=>'Unable to find message',
             'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
             ));
     }
     if( !isset($rc['sms']) ) {
-        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2773', 'msg'=>'Message does not exist.',
+        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.19', 'msg'=>'Message does not exist.',
             'sms_id'=>$sms_id, 'severity'=>50, 
             ));
     }
@@ -56,7 +56,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
     // Check to make sure the status is unsent
     //
     if( $message['status'] != '10' && $message['status'] != '15' ) {
-        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2774', 'msg'=>'Message does not exist.',
+        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.20', 'msg'=>'Message does not exist.',
             'sms_id'=>$sms_id, 'severity'=>10, 
             ));
     }
@@ -108,12 +108,12 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
         . "";
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.sms');
     if( $rc['stat'] != 'ok' ) {
-        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2775', 'msg'=>'Unable to acquire lock.', 'pmsg'=>'Failed to update status=20',
+        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.21', 'msg'=>'Unable to acquire lock.', 'pmsg'=>'Failed to update status=20',
             'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
             ));
     }
     if( $rc['num_affected_rows'] < 1 ) {
-        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2776', 'msg'=>'Unable to acquire lock.', 'pmsg'=>'No rows updated',
+        return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.22', 'msg'=>'Unable to acquire lock.', 'pmsg'=>'No rows updated',
             'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
             ));
     }
@@ -141,7 +141,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
         
         $rsp = curl_exec($ch);
         if( $rsp === false ) {
-            $error_rsp = ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2780', 'msg'=>'Unable to send message.', 'pmsg'=>'No rows updated',
+            $error_rsp = ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.23', 'msg'=>'Unable to send message.', 'pmsg'=>'No rows updated',
                 'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
                 ));
             if( $message['status'] == '10' ) {
@@ -153,7 +153,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
                     . "";
                 $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.sms');
                 if( $rc['stat'] != 'ok' ) {
-                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2777', 'msg'=>'Unable to send message, trying again.', 'pmsg'=>'Failed to update status=15',
+                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.24', 'msg'=>'Unable to send message, trying again.', 'pmsg'=>'Failed to update status=15',
                         'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
                         ));
                 }
@@ -166,7 +166,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
                     . "";
                 $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.sms');
                 if( $rc['stat'] != 'ok' ) {
-                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2779', 'msg'=>'Unable to send message.', 'pmsg'=>'Failed to update status=50',
+                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.25', 'msg'=>'Unable to send message.', 'pmsg'=>'Failed to update status=50',
                         'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
                         ));
                 }
@@ -181,7 +181,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
             //
             // Log the error
             //
-            $error_rsp = ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2788', 'msg'=>'Unable to send message.', 'pmsg'=>$rsp,
+            $error_rsp = ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.26', 'msg'=>'Unable to send message.', 'pmsg'=>$rsp,
                 'sms_id'=>$sms_id, 'severity'=>50,
                 ));
             if( $message['status'] == '10' ) {
@@ -193,7 +193,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
                     . "";
                 $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.sms');
                 if( $rc['stat'] != 'ok' ) {
-                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2789', 'msg'=>'Unable to send message, trying again.', 'pmsg'=>'Failed to update status=15',
+                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.27', 'msg'=>'Unable to send message, trying again.', 'pmsg'=>'Failed to update status=15',
                         'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
                         ));
                 }
@@ -206,7 +206,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
                     . "";
                 $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.sms');
                 if( $rc['stat'] != 'ok' ) {
-                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2790', 'msg'=>'Unable to send message.', 'pmsg'=>'Failed to update status=50',
+                    return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.28', 'msg'=>'Unable to send message.', 'pmsg'=>'Failed to update status=50',
                         'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
                         ));
                 }
@@ -231,7 +231,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
                 . "";
             $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.sms');
             if( $rc['stat'] != 'ok' ) {
-                return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'2765', 'msg'=>'Unable to acquire lock.', 'pmsg'=>'Failed to update status=30',
+                return ciniki_sms_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.29', 'msg'=>'Unable to acquire lock.', 'pmsg'=>'Failed to update status=30',
                     'sms_id'=>$sms_id, 'severity'=>50, 'err'=>$rc['err'],
                     ));
             }
