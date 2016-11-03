@@ -104,7 +104,7 @@ function ciniki_sms_accountUpdate(&$ciniki) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.sms', 'account');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2807', 'msg'=>'SMS Account not found', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.15', 'msg'=>'SMS Account not found', 'err'=>$rc['err']));
         }
         $account = $rc['account'];
 
@@ -123,10 +123,10 @@ function ciniki_sms_accountUpdate(&$ciniki) {
         
         $rsp = curl_exec($ch);
         if( $rsp === false ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2805', 'msg'=>'Unable to send SMS'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.16', 'msg'=>'Unable to send SMS'));
         }
         if( $rsp != 'Message queued successfully' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2806', 'msg'=>'Unable to send SMS: ' . $rsp));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.17', 'msg'=>'Unable to send SMS: ' . $rsp));
         }
         
     }

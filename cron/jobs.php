@@ -27,7 +27,7 @@ function ciniki_sms_cron_jobs($ciniki) {
         . "";
     $rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.sms', 'businesses', 'business_id');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2781', 'msg'=>'Unable to get list of businesses with sms', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.1', 'msg'=>'Unable to get list of businesses with sms', 'err'=>$rc['err']));
     }
     if( !isset($rc['businesses']) || count($rc['businesses']) == 0 ) {
         $businesses = array();

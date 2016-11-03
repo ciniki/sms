@@ -92,7 +92,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
                 return $rc;
             }
             if( !isset($rc['account']) ) {
-                return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2778', 'msg'=>'No account specified'));
+                return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.10', 'msg'=>'No account specified'));
             }
         }
         $account = $rc['account'];
@@ -241,7 +241,7 @@ function ciniki_sms_sendMessage(&$ciniki, $business_id, $sms_id, $account) {
                 2, 'ciniki_sms_messages', $sms_id, 'date_sent', $dt->format('Y-m-d H:i:s'));
         } 
     } else {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2787', 'msg'=>'Invalid sms account'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.11', 'msg'=>'Invalid sms account'));
     }
 
     return array('stat'=>'ok');

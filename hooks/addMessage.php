@@ -25,7 +25,7 @@ function ciniki_sms_hooks_addMessage(&$ciniki, $business_id, $args) {
         $args['customer_id'] = 0;
     }
     if( !isset($args['cell_number']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2767', 'msg'=>'No cell number specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.2', 'msg'=>'No cell number specified'));
     }
     if( !isset($args['flags']) ) {
         $args['flags'] = '0';
@@ -34,7 +34,7 @@ function ciniki_sms_hooks_addMessage(&$ciniki, $business_id, $args) {
         $args['status'] = '10';
     }
     if( !isset($args['content']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2768', 'msg'=>'No message specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.3', 'msg'=>'No message specified'));
     }
 
     //
@@ -56,7 +56,7 @@ function ciniki_sms_hooks_addMessage(&$ciniki, $business_id, $args) {
             'object_id'=>$args['object_id'],
             ), 0x04);
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2769', 'msg'=>'Unable to add object reference', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.4', 'msg'=>'Unable to add object reference', 'err'=>$rc['err']));
         }
     }
 

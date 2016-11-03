@@ -93,10 +93,10 @@ function ciniki_sms_accountGet($ciniki) {
         ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.sms', 'account');
         if( $rc['stat'] != 'ok' ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2802', 'msg'=>'SMS Account not found', 'err'=>$rc['err']));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.13', 'msg'=>'SMS Account not found', 'err'=>$rc['err']));
         }
         if( !isset($rc['account']) ) {
-            return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2812', 'msg'=>'Unable to find SMS Account'));
+            return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.14', 'msg'=>'Unable to find SMS Account'));
         }
         $account = $rc['account'];
     }

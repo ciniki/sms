@@ -51,7 +51,7 @@ function ciniki_sms_accountDelete(&$ciniki) {
         return $rc;
     }
     if( !isset($rc['account']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'2814', 'msg'=>'Airlock does not exist.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.12', 'msg'=>'Airlock does not exist.'));
     }
     $account = $rc['account'];
 
