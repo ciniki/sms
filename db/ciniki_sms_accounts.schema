@@ -7,7 +7,7 @@
 # -------
 # id:                   The id of the art catalog item.
 # uuid:                 The Universal Unique ID.
-# business_id:          The business the item is attached to.
+# tnid:                 The tenant the item is attached to.
 #
 # status:               The current status of the account.
 #
@@ -33,7 +33,7 @@
 create table ciniki_sms_accounts (
     id int not null auto_increment,
     uuid char(36) not null,
-    business_id int not null,
+    tnid int not null,
     name varchar(250) not null,
     status tinyint unsigned not null,
     api_method tinyint unsigned not null,
@@ -47,5 +47,5 @@ create table ciniki_sms_accounts (
     date_added datetime not null,
     last_updated datetime not null,
     primary key(id),
-    index sync (business_id, uuid, last_updated)
+    index sync (tnid, uuid, last_updated)
 ) ENGINE='InnoDB', COMMENT='v1.01';

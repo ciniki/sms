@@ -11,7 +11,7 @@
 // Returns
 // -------
 //
-function ciniki_sms_hooks_addMessage(&$ciniki, $business_id, $args) {
+function ciniki_sms_hooks_addMessage(&$ciniki, $tnid, $args) {
 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectAdd');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
@@ -40,7 +40,7 @@ function ciniki_sms_hooks_addMessage(&$ciniki, $business_id, $args) {
     //
     // Add the message
     //
-    $rc = ciniki_core_objectAdd($ciniki, $business_id, 'ciniki.sms.message', $args, 0x04);
+    $rc = ciniki_core_objectAdd($ciniki, $tnid, 'ciniki.sms.message', $args, 0x04);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -50,7 +50,7 @@ function ciniki_sms_hooks_addMessage(&$ciniki, $business_id, $args) {
     // Add the object references
     //
     if( isset($args['object']) && $args['object'] != '' && isset($args['object_id']) && $args['object_id'] != '' ) {
-        $rc = ciniki_core_objectAdd($ciniki, $business_id, 'ciniki.sms.objref', array(
+        $rc = ciniki_core_objectAdd($ciniki, $tnid, 'ciniki.sms.objref', array(
             'sms_id'=>$sms_id,
             'object'=>$args['object'],
             'object_id'=>$args['object_id'],

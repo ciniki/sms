@@ -2,13 +2,13 @@
 //
 // Description
 // -----------
-// This method will return the list of SMS Accounts for a business.
+// This method will return the list of SMS Accounts for a tenant.
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// business_id:        The ID of the business to get SMS Account for.
+// tnid:        The ID of the tenant to get SMS Account for.
 //
 // Returns
 // -------
@@ -19,7 +19,7 @@ function ciniki_sms_accountList($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'),
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'),
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -27,10 +27,10 @@ function ciniki_sms_accountList($ciniki) {
     $args = $rc['args'];
 
     //
-    // Check access to business_id as owner, or sys admin.
+    // Check access to tnid as owner, or sys admin.
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'sms', 'private', 'checkAccess');
-    $rc = ciniki_sms_checkAccess($ciniki, $args['business_id'], 'ciniki.sms.accountList');
+    $rc = ciniki_sms_checkAccess($ciniki, $args['tnid'], 'ciniki.sms.accountList');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -50,7 +50,7 @@ function ciniki_sms_accountList($ciniki) {
         . "ciniki_sms_accounts.sms_5min_limit, "
         . "ciniki_sms_accounts.disclaimer "
         . "FROM ciniki_sms_accounts "
-        . "WHERE ciniki_sms_accounts.business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE ciniki_sms_accounts.tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryArrayTree');
     $rc = ciniki_core_dbHashQueryArrayTree($ciniki, $strsql, 'ciniki.sms', array(

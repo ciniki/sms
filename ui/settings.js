@@ -61,7 +61,7 @@ function ciniki_sms_settings() {
             return this.data[i];
         };
         this.edit.fieldHistoryArgs = function(s, i) {
-            return {'method':'ciniki.sms.accountHistory', 'args':{'business_id':M.curBusinessID, 'setting':i}};
+            return {'method':'ciniki.sms.accountHistory', 'args':{'tnid':M.curTenantID, 'setting':i}};
         };
         this.edit.addButton('save', 'Save', 'M.ciniki_sms_settings.accountSave();');
         this.edit.addClose('Cancel');
@@ -89,10 +89,10 @@ function ciniki_sms_settings() {
     }
 
     //
-    // Grab the stats for the business from the database and present the list of orders.
+    // Grab the stats for the tenant from the database and present the list of orders.
     //
     this.menuShow = function(cb) {
-        M.api.getJSONCb('ciniki.sms.accountList', {'business_id':M.curBusinessID}, function(rsp) {
+        M.api.getJSONCb('ciniki.sms.accountList', {'tnid':M.curTenantID}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -108,7 +108,7 @@ function ciniki_sms_settings() {
         if( aid != null ) { this.edit.account_id = aid; }
         this.edit.reset();
         this.edit.sections._buttons.buttons.delete.visible = (this.edit.account_id>0?'yes':'no');
-        M.api.getJSONCb('ciniki.sms.accountGet', {'business_id':M.curBusinessID, 'account_id':this.edit.account_id}, function(rsp) {
+        M.api.getJSONCb('ciniki.sms.accountGet', {'tnid':M.curTenantID, 'account_id':this.edit.account_id}, function(rsp) {
             if( rsp.stat != 'ok' ) {
                 M.api.err(rsp);
                 return false;
@@ -124,7 +124,7 @@ function ciniki_sms_settings() {
         if( this.edit.account_id > 0 ) {
             var c = this.edit.serializeForm('no');
             if( c != '' ) {
-                M.api.postJSONCb('ciniki.sms.accountUpdate', {'business_id':M.curBusinessID, 'account_id':this.edit.account_id}, c, function(rsp) {
+                M.api.postJSONCb('ciniki.sms.accountUpdate', {'tnid':M.curTenantID, 'account_id':this.edit.account_id}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -136,7 +136,7 @@ function ciniki_sms_settings() {
             }
         } else {
             var c = this.edit.serializeForm('yes');
-            M.api.postJSONCb('ciniki.sms.accountAdd', {'business_id':M.curBusinessID}, c, function(rsp) {
+            M.api.postJSONCb('ciniki.sms.accountAdd', {'tnid':M.curTenantID}, c, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -151,7 +151,7 @@ function ciniki_sms_settings() {
         if( cell_number != '' ) {
             if( this.edit.account_id > 0 ) {
                 var c = this.edit.serializeForm('no');
-                M.api.postJSONCb('ciniki.sms.accountUpdate', {'business_id':M.curBusinessID, 'account_id':this.edit.account_id, 'sendtest':cell_number}, c, function(rsp) {
+                M.api.postJSONCb('ciniki.sms.accountUpdate', {'tnid':M.curTenantID, 'account_id':this.edit.account_id, 'sendtest':cell_number}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -161,7 +161,7 @@ function ciniki_sms_settings() {
                 });
             } else {
                 var c = this.edit.serializeForm('yes');
-                M.api.postJSONCb('ciniki.sms.accountAdd', {'business_id':M.curBusinessID, 'sendtest':cell_number}, c, function(rsp) {
+                M.api.postJSONCb('ciniki.sms.accountAdd', {'tnid':M.curTenantID, 'sendtest':cell_number}, c, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;

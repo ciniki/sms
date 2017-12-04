@@ -19,36 +19,36 @@ function ciniki_sms_cron_jobs($ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQueryList');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQueryIDTree');
     //
-    // Get the list of businesses which have sms waiting to be sent
+    // Get the list of tenants which have sms waiting to be sent
     //
-    $strsql = "SELECT DISTINCT business_id "
+    $strsql = "SELECT DISTINCT tnid "
         . "FROM ciniki_sms_messages "
         . "WHERE status = 10 OR status = 15 "
         . "";
-    $rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.sms', 'businesses', 'business_id');
+    $rc = ciniki_core_dbQueryList($ciniki, $strsql, 'ciniki.sms', 'tenants', 'tnid');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.1', 'msg'=>'Unable to get list of businesses with sms', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.sms.1', 'msg'=>'Unable to get list of tenants with sms', 'err'=>$rc['err']));
     }
-    if( !isset($rc['businesses']) || count($rc['businesses']) == 0 ) {
-        $businesses = array();
+    if( !isset($rc['tenants']) || count($rc['tenants']) == 0 ) {
+        $tenants = array();
     } else {
-        $businesses = $rc['businesses'];
+        $tenants = $rc['tenants'];
     }
 
     //
-    // For each business, load their sms settings
+    // For each tenant, load their sms settings
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'sms', 'private', 'sendMessage');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'objectUpdate');
-    foreach($businesses as $business_id) {
+    foreach($tenants as $tnid) {
         $limit = 0;     // Default to really slow sending, 1 every 5 minutes
         // FIXME: Add rate limiting
         //
-        // Load the active accounts for the business
+        // Load the active accounts for the tenant
         //
         $strsql = "SELECT id, api_method, api_endpoint, cell_arg, msg_arg, key_arg, account_key, sms_5min_limit "
             . "FROM ciniki_sms_accounts "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND status = 10 "
             . "";
         $rc = ciniki_core_dbHashQueryIDTree($ciniki, $strsql, 'ciniki.sms', array(
@@ -56,17 +56,17 @@ function ciniki_sms_cron_jobs($ciniki) {
                 'fields'=>array('id', 'api_method', 'api_endpoint', 'cell_arg', 'msg_arg', 'key_arg', 'account_key', 'sms_5min_limit')),
             ));
         if( $rc['stat'] != 'ok' ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.30', 'msg'=>'No accounts setup to send SMS.', 
+            ciniki_cron_logMsg($ciniki, $tnid, array('code'=>'ciniki.sms.30', 'msg'=>'No accounts setup to send SMS.', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
         if( !isset($rc['accounts']) ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.31', 'msg'=>'No accounts setup to send SMS.', 
+            ciniki_cron_logMsg($ciniki, $tnid, array('code'=>'ciniki.sms.31', 'msg'=>'No accounts setup to send SMS.', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
         if( count($rc['accounts']) < 1 ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.32', 'msg'=>'No accounts setup to send SMS.', 
+            ciniki_cron_logMsg($ciniki, $tnid, array('code'=>'ciniki.sms.32', 'msg'=>'No accounts setup to send SMS.', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
@@ -78,13 +78,13 @@ function ciniki_sms_cron_jobs($ciniki) {
         //
         $strsql = "SELECT id, account_id "
             . "FROM ciniki_sms_messages "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND (status = 10 OR status = 15) "
             . "ORDER BY status DESC, last_updated " // Any that we have tried to send will get their last_updated changed and be bumped to back of the line
             . "";
         $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.sms', 'sms');
         if( $rc['stat'] != 'ok' ) {
-            ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.33', 'msg'=>'Unable to load the list of messages to send', 
+            ciniki_cron_logMsg($ciniki, $tnid, array('code'=>'ciniki.sms.33', 'msg'=>'Unable to load the list of messages to send', 
                 'severity'=>50, 'err'=>$rc['err']));
             continue;
         }
@@ -94,10 +94,10 @@ function ciniki_sms_cron_jobs($ciniki) {
                 //
                 // Send the message
                 //
-                $rc = ciniki_sms_sendMessage($ciniki, $business_id, $message['id'], 
+                $rc = ciniki_sms_sendMessage($ciniki, $tnid, $message['id'], 
                     (isset($accounts[$message['account_id']])?$accounts[$message['account_id']]:$accounts[$default_account_id]));
                 if( $rc['stat'] != 'ok' ) {
-                    ciniki_cron_logMsg($ciniki, $business_id, array('code'=>'ciniki.sms.34', 'msg'=>'Unable to send message',
+                    ciniki_cron_logMsg($ciniki, $tnid, array('code'=>'ciniki.sms.34', 'msg'=>'Unable to send message',
                         'severity'=>50, 'err'=>$rc['err']));
                     continue;
                 }

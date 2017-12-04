@@ -9,7 +9,7 @@
 // Returns
 // -------
 //
-function ciniki_sms_hooks_objectMessages($ciniki, $business_id, $args) {
+function ciniki_sms_hooks_objectMessages($ciniki, $tnid, $args) {
 
     //
     // Load the status maps for the text description of each status
@@ -24,8 +24,8 @@ function ciniki_sms_hooks_objectMessages($ciniki, $business_id, $args) {
     //
     // Load intl date settings
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'intlSettings');
-    $rc = ciniki_businesses_intlSettings($ciniki, $business_id);
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'intlSettings');
+    $rc = ciniki_tenants_intlSettings($ciniki, $tnid);
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -54,11 +54,11 @@ function ciniki_sms_hooks_objectMessages($ciniki, $business_id, $args) {
             . "ciniki_sms_messages.cell_number, "
             . "ciniki_sms_messages.content "
             . "FROM ciniki_sms_objrefs, ciniki_sms_messages "
-            . "WHERE ciniki_sms_objrefs.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE ciniki_sms_objrefs.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_sms_objrefs.object = '" . ciniki_core_dbQuote($ciniki, $args['object']) . "' "
             . "AND ciniki_sms_objrefs.object_id = '" . ciniki_core_dbQuote($ciniki, $args['object_id']) . "' "
             . "AND ciniki_sms_objrefs.sms_id = ciniki_sms_messages.id "
-            . "AND ciniki_sms_messages.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_sms_messages.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         if( isset($args['customer_id']) && $args['customer_id'] > 0 ) {
             $strsql .= "AND ciniki_sms_messages.customer_id = '" . ciniki_core_dbQuote($ciniki, $args['customer_id']) . "' ";
@@ -97,11 +97,11 @@ function ciniki_sms_hooks_objectMessages($ciniki, $business_id, $args) {
             . "ciniki_sms_messages.cell_number, "
             . "ciniki_sms_messages.content "
             . "FROM ciniki_sms_objrefs, ciniki_sms_messages "
-            . "WHERE ciniki_sms_objrefs.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "WHERE ciniki_sms_objrefs.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND ciniki_sms_objrefs.object = '" . ciniki_core_dbQuote($ciniki, $args['object']) . "' "
             . "AND ciniki_sms_objrefs.sms_id = ciniki_sms_messages.id "
             . "AND ciniki_sms_messages.customer_id = '" . ciniki_core_dbQuote($ciniki, $args['customer_id']) . "' "
-            . "AND ciniki_sms_messages.business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+            . "AND ciniki_sms_messages.tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "";
         $strsql .= "ORDER BY ciniki_sms_messages.date_sent DESC "
             . "";
