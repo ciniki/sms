@@ -37,12 +37,12 @@ function ciniki_sms_hooks_uiSettings($ciniki, $tnid, $args) {
             || ($ciniki['session']['user']['perms']&0x01) == 0x01
             )
         ) {
-        $menu_item = array(
+/*        $menu_item = array(
             'priority'=>2000,
             'label'=>'SMS', 
             'edit'=>array('app'=>'ciniki.sms.main'),
             );
-        $rsp['menu_items'][] = $menu_item;
+        $rsp['menu_items'][] = $menu_item; */
     } 
 
     if( isset($ciniki['tenant']['modules']['ciniki.sms'])
