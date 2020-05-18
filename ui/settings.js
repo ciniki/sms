@@ -81,7 +81,7 @@ function ciniki_sms_settings() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_sms_settings', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -156,7 +156,7 @@ function ciniki_sms_settings() {
                         M.api.err(rsp);
                         return false;
                     } 
-                    alert('SMS sent');
+                    M.alert('SMS sent');
                     M.ciniki_sms_settings.accountEdit();
                 });
             } else {
@@ -166,7 +166,7 @@ function ciniki_sms_settings() {
                         M.api.err(rsp);
                         return false;
                     } 
-                    alert('SMS sent');
+                    M.alert('SMS sent');
                     M.ciniki_sms_settings.accountEdit(null,rsp.id);
                 });
                 
